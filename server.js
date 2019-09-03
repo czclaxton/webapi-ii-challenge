@@ -80,3 +80,23 @@ server.use(express.json());
 //       });
 //     });
 // });
+
+server.delete("/api/posts/:id", (req, res) => {
+  const id = req.params.id;
+  actions
+    .remove(id)
+    .then(post => {
+      if (post) {
+        res.status(201).json(post);
+      } else {
+        res
+          .status(404)
+          .json({ error: "The post with the specified id does not exist." });
+      }
+    })
+    .catch(() => {
+      res.status(500).json({ error: "The post could not be removed!" });
+    });
+});
+
+module.exports = server;
